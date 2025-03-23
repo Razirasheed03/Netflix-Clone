@@ -6,11 +6,12 @@ import { createUserWithEmailAndPassword,
 import { addDoc,
         collection,
         getFirestore } from "firebase/firestore";
+import { toast } from "react-toastify";
 const firebaseConfig = {
   apiKey: "AIzaSyDCBdAw-_VpajAUPabOpDE5rZ5oEv1jK48",
   authDomain: "netflixclone-8e674.firebaseapp.com",
   projectId: "netflixclone-8e674",
-  storageBucket: "netflixclone-8e674.firebasestorage.app",
+  storageBucket: "netflixclone-8e674.appspot.com",
   messagingSenderId: "215446105378",
   appId: "1:215446105378:web:d82de34beef7ca4e30c97b"
 };
@@ -31,7 +32,7 @@ try {
    })
 } catch (error) {
     console.log("error in db",error)
-    alert(error)
+    toast.error(error.code.split('/')[1].split('-').join(" "))
     
 }
 }
@@ -40,7 +41,7 @@ const login = async (email,password)=>{
        await signInWithEmailAndPassword(auth,email,password)
     } catch (error) {
         console.log("error in login db",error)
-        alert(error)
+        toast.error(error.code.split('/')[1].split('-').join(" "))
     }
 }
 const logout=()=>{

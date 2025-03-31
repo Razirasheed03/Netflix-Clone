@@ -5,10 +5,10 @@ import { Link } from 'react-router-dom'
 
 
 
-const TitleCards = ({title,category}) => {
+const TitleCards = ({ title, category }) => {
 
-  const [apiData,setApiData]=useState([])
-  const cardsRef=useRef();
+  const [apiData, setApiData] = useState([])
+  const cardsRef = useRef();
 
   const options = {
     method: 'GET',
@@ -17,33 +17,33 @@ const TitleCards = ({title,category}) => {
       Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkMjcyZmNjMzc2OThkMWZiNmRjZmIxZmQ2YzVhMTQ3OCIsIm5iZiI6MTc0MjcyNzUxMS41ODYsInN1YiI6IjY3ZGZlOTU3ZTRhOWM4NjkwNjA3Y2ZmMCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.oaHzzKfmeLv8qJrlkkLwR2-avKRuAuKc-PIL2Wnsbew'
     }
   };
-  
- 
 
-const handleWheel=(event)=>{
-  event.preventDefault();
-  cardsRef.current.scrollLeft+=event.deltaY;
-}
-useEffect(()=>{
-  fetch(`https://api.themoviedb.org/3/movie/${category?category:"now_playing"}?language=en-US&page=1`, options)
-  .then(res => res.json())
-  .then(res => setApiData(res.results))
-  .catch(err => console.error(err));
 
-  cardsRef.current.addEventListener('wheel',handleWheel)
-},[]) 
+
+  const handleWheel = (event) => {
+    event.preventDefault();
+    cardsRef.current.scrollLeft += event.deltaY;
+  }
+  useEffect(() => {
+    fetch(`https://api.themoviedb.org/3/movie/${category ? category : "now_playing"}?language=en-US&page=1`, options)
+      .then(res => res.json())
+      .then(res => setApiData(res.results))
+      .catch(err => console.error(err));
+
+    cardsRef.current.addEventListener('wheel', handleWheel)
+  }, [])
 
   return (
-    <div className='title-cards'> 
-    <h2>{title?title:"Popular on Netflix"}</h2>
-    <div className="card-list" ref={cardsRef}>
-      {apiData.map((card,index)=>{
-        return <Link to={`/player/${card.id}`} className="card" key={index}>
-          <img src={`https://image.tmdb.org/t/p/w500`+card.backdrop_path} alt="" />
-          <p>{card.original_title}</p>
-        </Link>
-      })}
-    </div>
+    <div className='title-cards'>
+      <h2>{title ? title : "Popular on Netflix"}</h2>
+      <div className="card-list" ref={cardsRef}>
+        {apiData.map((card, index) => {
+          return <Link to={`/player/${card.id}`} className="card" key={index}>
+            <img src={`https://image.tmdb.org/t/p/w500` + card.backdrop_path} alt="" />
+            <p>{card.original_title}</p>
+          </Link>
+        })}
+      </div>
     </div>
   )
 }
